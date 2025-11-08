@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Global Vehicle Diagnostics 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* ===== GENERAL ===== */
+body {margin:0; font-family:'Arial',sans-serif; background:#f5f7fa; color:#333; scroll-behavior:smooth;}
+.container { max-width:1200px; margin:auto; padding:20px; }
+a { text-decoration:none; color:#00d4ff; }
+a:hover { text-decoration:underline; }
+
+/* ===== HEADER ===== */
+header { background:#111; color:#fff; padding:15px 0; position:fixed; width:100%; top:0; z-index:1000; box-shadow:0 2px 15px rgba(0,0,0,0.5);}
+header .container { display:flex; justify-content:space-between; align-items:center; }
+header nav a { margin-left:15px; font-weight:bold; color:#fff; transition:0.3s; }
+header nav a.active { color:#00ffff; }
+
+/* ===== HERO ===== */
+.hero { background: linear-gradient(135deg,#0d6efd,#00d4ff); color:#fff; padding:160px 20px 100px 20px; text-align:center; border-radius:0 0 50% 50%/15%; box-shadow:0 5px 30px rgba(0,0,0,0.2);}
+.hero h1 { font-size:3rem; margin-bottom:15px; text-shadow:2px 2px 10px rgba(0,0,0,0.3);}
+.hero p { font-size:1.2rem; margin-bottom:20px;}
+.hero .btn { background:#fff; color:#0d6efd; padding:15px 30px; border-radius:30px; font-weight:bold; box-shadow:0 4px 20px rgba(0,0,0,0.2); transition:0.3s;}
+.hero .btn:hover { background:#00ffff; color:#fff; transform:scale(1.05); }
+
+/* ===== SECTIONS ===== */
+section { padding:80px 20px; margin-top:60px; opacity:0; transform:translateY(40px); transition:all 1s ease;}
+section.visible { opacity:1; transform:translateY(0);}
+section h2 { text-align:center; margin-bottom:40px; font-size:2.5rem; color:#0d6efd; text-transform:uppercase; letter-spacing:1px; }
+.cards { display:flex; flex-wrap:wrap; justify-content:space-around; gap:25px; }
+.card { background:#fff; padding:25px; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.1); width:30%; text-align:center; transition:0.4s; }
+.card:hover { transform:translateY(-10px) scale(1.05); box-shadow:0 10px 40px rgba(0,0,0,0.25);}
+.card h3 { color:#0d6efd; margin-bottom:15px; }
+.card p { font-size:1rem; line-height:1.6; }
+
+/* FILTER BUTTONS */
+.filter-btns, .search-bar { text-align:center; margin-bottom:30px; }
+.filter-btns button, .search-bar input { margin:5px; padding:10px 20px; border:none; border-radius:25px; background:#0d6efd; color:#fff; font-weight:bold; transition:0.3s; }
+.filter-btns button:hover, .filter-btns button.active { background:#00d4ff; color:#000; transform:scale(1.05);}
+.search-bar input { width:250px; outline:none; background:#fff; color:#000; border:2px solid #0d6efd; }
+
+/* FOOTER */
+footer { background:#111; color:#fff; text-align:center; padding:25px 0; margin-top:50px; font-size:0.9rem; }
+
+/* RESPONSIVE */
+@media(max-width:900px){ .cards{flex-direction:column; align-items:center;} .card{width:90%;} }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+<div class="container">
+<h2>Global Vehicle Diagnostics</h2>
+<nav>
+<a href="#home" class="active">Home</a>
+<a href="#cars">All Cars Database</a>
+<a href="#diagnostics">Diagnostics Logs</a>
+<a href="#scanner">Vehicle Scanner</a>
+<a href="#software">Vehicle Software</a>
+<a href="#about">About</a>
+<a href="#faq">FAQ</a>
+<a href="#contact">Contact</a>
+</nav>
+</div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero visible">
+<h1>Global Vehicle Diagnostics 2025</h1>
+<p>Scan, Fix & Track Cars Worldwide | EV, Hybrid, Petrol & Diesel</p>
+<a href="#cars" class="btn">Explore Cars Database</a>
+</section>
+
+<!-- CARS DATABASE -->
+<section id="cars">
+<h2>All Cars Database</h2>
+<div class="search-bar"><input type="text" id="searchInput" placeholder="Search by brand or model..."></div>
+<div class="filter-btns">
+<button class="active" onclick="filterCars('All')">All</button>
+<button onclick="filterCars('EV')">EV</button>
+<button onclick="filterCars('Hybrid')">Hybrid</button>
+<button onclick="filterCars('Petrol')">Petrol</button>
+<button onclick="filterCars('Diesel')">Diesel</button>
+</div>
+<div class="cards" id="car-list"></div>
+</section>
+
+<!-- DIAGNOSTICS LOGS -->
+<section id="diagnostics">
+<h2>Diagnostics Logs</h2>
+<div class="cards" id="diagnostic-list"></div>
+<canvas id="diagChart" width="400" height="200"></canvas>
+</section>
+
+<!-- VEHICLE SCANNER -->
+<section id="scanner">
+<h2>Vehicle Scanner</h2>
+<div class="cards">
+<div class="card">
+<p>Connect via Bluetooth or USB. Scan EV, Hybrid, Petrol & Diesel vehicles in real-time. Advanced diagnostics for 2025 and beyond.</p>
+</div>
+</div>
+</section>
+
+<!-- VEHICLE SOFTWARE -->
+<section id="software">
+<h2>Vehicle Software</h2>
+<div class="cards" id="software-list"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<h2>About Global Vehicle Diagnostics</h2>
+<div class="cards">
+<div class="card">
+<p>GVD 2025 is a next-gen platform to scan, track and fix vehicles worldwide. Supports all types of cars with the latest AI-powered software.</p>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+<h2>FAQ</h2>
+<div class="cards">
+<div class="card"><p><strong>Q:</strong> Does it support EV cars?<br><strong>A:</strong> Yes, fully updated for 2025 EV & Hybrid vehicles.</p></div>
+<div class="card"><p><strong>Q:</strong> Can it fix errors automatically?<br><strong>A:</strong> Scanner provides suggestions; manual fixing required.</p></div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<h2>Contact Us</h2>
+<div class="cards">
+<div class="card">
+<p>Email: support@gvd2025.com<br>Phone: +92 300 0000000<br>Address: Karachi, Pakistan</p>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>© 2025 Global Vehicle Diagnostics | Made by Hamza | May Allah bless</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+// ==== CARS DATA ====
+const carsData = [
+{"make":"Toyota","model":"Corolla","year":2023,"type":"Petrol","common_errors":"Engine misfire, Check engine light"},
+{"make":"Tesla","model":"Model S","year":2025,"type":"EV","common_errors":"Battery calibration, Tire pressure"},
+{"make":"Honda","model":"Civic","year":2022,"type":"Hybrid","common_errors":"Brake system alert, Transmission warning"},
+{"make":"Ford","model":"F-150","year":2024,"type":"Diesel","common_errors":"Fuel injector issue, Emission sensor"},
+{"make":"BMW","model":"iX","year":2025,"type":"EV","common_errors":"Software update needed, Charging error"},
+{"make":"Nissan","model":"Leaf","year":2024,"type":"EV","common_errors":"Battery temperature sensor"},
+{"make":"Audi","model":"A4","year":2023,"type":"Petrol","common_errors":"Oil pressure warning"},
+{"make":"Mercedes","model":"EQC","year":2025,"type":"EV","common_errors":"Battery firmware update"},
+{"make":"Hyundai","model":"Kona EV","year":2025,"type":"EV","common_errors":"Tire pressure sensor alert"},
+{"make":"Kia","model":"Sorento","year":2024,"type":"Hybrid","common_errors":"Hybrid battery calibration"},
+{"make":"Ford","model":"Mustang Mach-E","year":2025,"type":"EV","common_errors":"Software update required"},
+{"make":"Volkswagen","model":"ID.4","year":2025,"type":"EV","common_errors":"Charging port error"},
+{"make":"Toyota","model":"Prius","year":2023,"type":"Hybrid","common_errors":"Hybrid system alert"},
+{"make":"Chevrolet","model":"Bolt EV","year":2024,"type":"EV","common_errors":"Battery range sensor"},
+{"make":"Honda","model":"Accord","year":2023,"type":"Petrol","common_errors":"Transmission warning"}
+];
+
+// ==== SOFTWARE LIST ====
+const softwareList = [
+{ name: "GVD Scanner 2025", type: "All Vehicles", website: "https://gvd2025.com" },
+{ name: "EVFix Pro", type: "EV Cars", website: "https://evfixpro.com" },
+{ name: "HybridCare", type: "Hybrid Cars", website: "https://hybridcare.com" },
+{ name: "DieselDoctor", type: "Diesel Vehicles", website: "https://dieseldoctor.com" },
+{ name: "PetrolScan", type: "Petrol Vehicles", website: "https://petrolscan.com" }
+];
+
+// ==== DIAGNOSTICS LOGS ====
+const diagData = [
+{"car":"Toyota Corolla","error_code":"P0301","description":"Cylinder 1 misfire","fix":"Check spark plug"},
+{"car":"Tesla Model S","error_code":"BMS001","description":"Battery calibration needed","fix":"Update firmware"},
+{"car":"Honda Civic","error_code":"BRAKE123","description":"Brake sensor alert","fix":"Inspect brake system"},
+{"car":"Ford F-150","error_code":"DIESEL456","description":"Fuel injector fault","fix":"Replace injector"}
+];
+
+// ==== LOAD CARS ====
+const carList = document.getElementById('car-list');
+function displayCars(cars){
+  carList.innerHTML = '';
+  cars.forEach(car=>{
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<h3>${car.make} ${car.model} (${car.year})</h3>
+                     <p>Type: ${car.type}</p>
+                     <p>Common Errors: ${car.common_errors}</p>`;
+    carList.appendChild(div);
+  });
+}
+displayCars(carsData);
+function filterCars(type){
+  document.querySelectorAll('.filter-btns button').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  if(type==='All') displayCars(carsData);
+  else displayCars(carsData.filter(c=>c.type===type));
+}
+
+// ==== SEARCH FUNCTION ====
+document.getElementById('searchInput').addEventListener('keyup', function(){
+  let query = this.value.toLowerCase();
+  let filtered = carsData.filter(c=>c.make.toLowerCase().includes(query) || c.model.toLowerCase().includes(query));
+  displayCars(filtered);
+});
+
+// ==== LOAD SOFTWARE ====
+const softList = document.getElementById('software-list');
+softwareList.forEach(s=>{
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `<h3>${s.name}</h3>
+                   <p>Type: ${s.type}</p>
+                   <p>Website: <a href="${s.website}" target="_blank">${s.website}</a></p>`;
+  softList.appendChild(div);
+});
+
+// ==== LOAD DIAGNOSTICS ====
+const diagList = document.getElementById('diagnostic-list');
+let errorCounts = {};
+diagData.forEach(log=>{
+  errorCounts[log.error_code] = (errorCounts[log.error_code] || 0) + 1;
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `<h3>${log.car}</h3>
+                   <p>Error Code: ${log.error_code}</p>
+                   <p>Description: ${log.description}</p>
+                   <p>Suggested Fix: ${log.fix}</p>`;
+  diagList.appendChild(div);
+});
+
+// ==== CHART FOR ERRORS ====
+const ctx = document.getElementById('diagChart').getContext('2d');
+new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: Object.keys(errorCounts),
+    datasets: [{
+      label: 'Error Frequency',
+      data: Object.values(errorCounts),
+      backgroundColor: ['#0d6efd','#00d4ff','#ff6384','#ffc107','#28a745']
+    }]
+  }
+});
+
+// ==== NAV ACTIVE LINK ====
+const navLinks = document.querySelectorAll('header nav a');
+window.addEventListener('scroll', ()=>{
+  let fromTop = window.scrollY + 80;
+  navLinks.forEach(link=>{
+    let section = document.querySelector(link.getAttribute('href'));
+    if(section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop){
+      link.classList.add('active');
+    } else { link.classList.remove('active'); }
+  });
+});
+
+// ==== SCROLL ANIMATIONS ====
+const sections = document.querySelectorAll('section');
+window.addEventListener('scroll', ()=>{
+  let trigger = window.innerHeight - 100;
+  sections.forEach(sec=>{
+    if(sec.getBoundingClientRect().top < trigger){ sec.classList.add('visible'); }
+  });
+});
+</script>
+</body>
+</html>
+
+</body>
+</html>
